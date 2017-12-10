@@ -1,0 +1,30 @@
+<?xml version="1.0"?>
+<!DOCTYPE suppressions PUBLIC
+    "-//Puppy Crawl//DTD Suppressions 1.1//EN"
+    "http://www.puppycrawl.com/dtds/suppressions_1_1.dtd">
+
+<!--
+  CS4250 checkstyle suppressions configuration - modified for CS3250 Group6
+ -->
+
+
+<suppressions>
+    <!-- Suppress warnings for form input methods -->
+    <suppress checks="ParameterNumber" files="[\\/]*.java"/>
+    <suppress checks="TodoComment" files="[\\/]*.java"/>
+
+    <!-- Tone down the checking for test classes -->
+    <suppress checks="MagicNumber" files="MsubannerApplication.java|[\\/]*Test.java$"/>
+    <suppress checks="EmptyBlock" files="[\\/]*Test.java$"/>
+    <suppress checks="ImportControl" files="[\\/]*Test.java$"/>
+    <suppress checks="Javadoc" files="[\\/]*Test.java$"/>
+    <suppress checks="MethodCount" files="[\\/]*Test.java$"/>
+    <suppress checks="EqualsAvoidNull" files="[\\/]*Test.java$"/>
+    <suppress checks="DesignForExtension" files="[\\/]*Test.java$"/>
+    <suppress checks="LineLength" files="[\\/]*Test.java$"/>
+    <suppress checks="Name" files="[\\/]*Test.java$"/>
+    <suppress checks="HideUtilityClassConstructor" files="MsubannerApplication.java|SectionControllerTest.java"/>
+    <suppress checks="MethodLength" files="MsubannerApplication.java"/>
+    <suppress checks="NewlineAtEndOfFile" files="."/>
+
+</suppressions>
