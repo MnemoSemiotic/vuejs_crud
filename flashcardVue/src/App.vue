@@ -7,13 +7,13 @@
         <h1>Http Requests</h1>
         <div class="form-group">
           <label>Question</label>
-          <input class="form-control" type="text">
+          <input class="form-control" type="text" v-model="flashcard.question">
         </div>
         <div class="form-group">
           <label>Answer</label>
-          <input class="form-control" type="text">
+          <input class="form-control" type="text" v-model="flashcard.answer">
         </div>
-        <button class="btn btn-primary">Submit</button>
+        <button class="btn btn-primary" @click="submit">Submit</button>
         </div>
       </div>
 
@@ -23,7 +23,24 @@
 
 <script>
 export default {
-  name: 'app'
+  data() {
+    return {
+      flashcard: {
+        question: '',
+        answer: ''
+      }
+    };
+  },
+  methods: {
+    submit() {
+      this.$http.post('http://localhost:8080/flashcards/addflashcard' + '?flashCardQuestion=' + this.flashcard.question + '?&flashCardAnswer=' + this.flashcard.answer )
+          .then( response => {
+            console.log(response);
+          }, error => {
+            console.log(error);
+          });
+    }
+  }
 }
 </script>
 
