@@ -4,16 +4,15 @@ import edu.cs390p.flashcards.entities.FlashCard;
 import edu.cs390p.flashcards.services.FlashCardService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
+
+import java.util.List;
 
 /**
  * The controller for the FlashCard class.
  */
-@Controller
+@RestController
 public class FlashCardController {
 
     /** The FlashCard service. */
@@ -27,10 +26,8 @@ public class FlashCardController {
      * @return the list of all FlashCards
      */
     @RequestMapping(value = "/flashcards", method = RequestMethod.GET)
-    public ModelAndView getAllFlashCards() {
-        ModelAndView mav = new ModelAndView("flashcards");
-        mav.addObject("allflashcards", flashCardService.getAllFlashCards());
-        return mav;
+    public List<FlashCard> getAllFlashCards() {
+        return flashCardService.getAllFlashCards();
     }
 
     /**
@@ -40,12 +37,9 @@ public class FlashCardController {
      * @return the flashcard
      */
     @RequestMapping("/flashcards/{id}")
-    public ModelAndView getFlashCard(@PathVariable final String id) {
-        ModelAndView mav = new ModelAndView("showflashcard");
-        FlashCard flashCard = flashCardService.getFlashCard(id);
-        mav.addObject("flashcard", flashCard);
-
-        return mav;
+    public FlashCard getFlashCard(@PathVariable final String id) {
+        System.out.println(flashCardService.getFlashCard(id));
+        return flashCardService.getFlashCard(id);
     }
 
     /**
@@ -53,19 +47,14 @@ public class FlashCardController {
      *
      * @param flashCardQuestion the flashcard question
      * @param flashCardAnswer the flashcard answer
-     * @return the flashcard
      */
     @RequestMapping(method = RequestMethod.POST, value = "/flashcards/addflashcard")
-    public ModelAndView addFlashCard(@RequestParam final String flashCardQuestion,
+    public void addFlashCard(@RequestParam final String flashCardQuestion,
             final String flashCardAnswer) {
 
         FlashCard flashCard = new FlashCard(flashCardQuestion, flashCardAnswer);
+        System.out.println(flashCard.getQuestion() + " : " + flashCard.getAnswer());
         flashCardService.addFlashCard(flashCard);
-
-        ModelAndView mav = new ModelAndView("showflashcard");
-        mav.addObject("flashcard", flashCard);
-
-        return mav;
     }
 
     /**
@@ -77,16 +66,14 @@ public class FlashCardController {
      */
     @RequestMapping(method = RequestMethod.GET,
             value = "/flashcards/updateflashcard/{id}")
-    public ModelAndView updateFlashCard(@RequestParam final String question,
+    public void updateFlashCard(@RequestParam final String question,
             final String answer, @PathVariable final String id) {
         FlashCard flashCard = flashCardService.getFlashCard(id);
         flashCard.setAnswer(answer);
         flashCard.setQuestion(question);
+        System.out.println(flashCard.getQuestion() + " : " + flashCard.getAnswer());
 
         flashCardService.updateFlashCard(flashCard);
-        ModelAndView mav = new ModelAndView("showflashcard");
-        mav.addObject("flashcard", flashCard);
-        return mav;
     }
 
     /**
@@ -97,11 +84,8 @@ public class FlashCardController {
      */
     @RequestMapping(method = RequestMethod.GET,
             value = "/flashCards/deleteflashcard/{id}")
-    public ModelAndView deleteFlashCard(@PathVariable final String id) {
+    public void deleteFlashCard(@PathVariable final String id) {
         flashCardService.deleteFlashCard(id);
-        ModelAndView mav = new ModelAndView("flashcards");
-        mav.addObject("allflashcards", flashCardService.getAllFlashCards());
-        return mav;
     }
 
     /**
