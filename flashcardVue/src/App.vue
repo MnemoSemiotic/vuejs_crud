@@ -31,6 +31,23 @@
           </p>
         <hr>
 
+        <h1>Update A Flashcard</h1>
+        <div class="form-group">
+          <label>ID of Flashcard</label>
+          <input class="form-control" type="text" v-model="flashcardUpdate.id">
+        </div>
+        <div class="form-group">
+          <label>Question</label>
+          <input class="form-control" type="text" v-model="flashcardUpdate.question">
+        </div>
+        <div class="form-group">
+          <label>Answer</label>
+          <input class="form-control" type="text" v-model="flashcardUpdate.answer">
+        </div>
+        <button class="btn btn-primary" @click="update">Update that Card</button>
+
+        <hr>
+
 
         <h1>List All Flashcards</h1>
         <button class="btn btn-primary" @click="fetchData">List All Flashcards</button>
@@ -61,6 +78,12 @@ export default {
         id: ''
       },
 
+      flashcardUpdate: {
+        question: '',
+        answer: '',
+        id: ''
+      },
+
       flashcards: []
     };
   },
@@ -72,6 +95,15 @@ export default {
           }, error => {
             console.log(error);
           });
+    },
+
+    update() {
+      this.$http.get('http://localhost:8080/flashcards/updateflashcard/' + this.flashcardUpdate.id + '?question=' + this.flashcardUpdate.question + '?&answer=' + this.flashcardUpdate.answer )
+          .then(response => {
+          console.log(response);
+        }, error => {
+          console.log(error);
+        });
     },
 
     fetchOne() {
