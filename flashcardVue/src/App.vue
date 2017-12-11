@@ -3,8 +3,9 @@
     <img src="./assets/logo.png">
     <router-view/>
     <div class="row">
+
       <div class="col-xs-12 col-sm-8 col-sm-offset-2 col-md-6 col-md-offset-3">
-        <h1>Http Requests</h1>
+        <h1>Add a New Flashcard</h1>
         <div class="form-group">
           <label>Question</label>
           <input class="form-control" type="text" v-model="flashcard.question">
@@ -15,10 +16,29 @@
         </div>
         <button class="btn btn-primary" @click="submit">Submit</button>
         <hr>
-        <button class="btn btn-primary" @click="fetchData">Get Flashcard</button>
+
+
+        <h1>Get A Flashcard</h1>
+        <div class="form-group">
+          <label>ID of Flashcard</label>
+          <input class="form-control" type="text" v-model="flashcard.id">
+        </div>
+        <button class="btn btn-primary" @click="fetchOne">Get that Card</button>
+
+          <p>Id: {{ oneFlashcard.id }} - Question: {{ oneFlashcard.question }} <br>
+
+            Answer: {{ oneFlashcard.answer }}
+          </p>
+        <hr>
+
+
+        <h1>List All Flashcards</h1>
+        <button class="btn btn-primary" @click="fetchData">List All Flashcards</button>
         <ul class="list-group">
           <li class="list-group-item" v-for="f in flashcards">{{ f.question }} : {{ f.answer }} </li>
         </ul>
+
+
         </div>
       </div>
 
@@ -32,8 +52,15 @@ export default {
     return {
       flashcard: {
         question: '',
-        answer: ''
+        answer: '',
+        id: ''
       },
+      oneFlashcard: {
+        question: '',
+        answer: '',
+        id: ''
+      },
+
       flashcards: []
     };
   },
@@ -46,14 +73,34 @@ export default {
             console.log(error);
           });
     },
-    fetchData() {
-      this.$http.get('http://localhost:8080/flashcards/', {headers: {'X-Custom': 'HTTP/1.1'}})
+
+    fetchOne() {
+      console.log("flashcardId:" + this.flashcard.id);
+      this.$http.get('http://localhost:8080/flashcards/' + this.flashcard.id)
           .then(response => {
             return response.json();
           })
           .then(data => {
             const resultArray = [];
             for (let key in data) {
+              resultArray.push(data[key]);
+            }
+            this.oneFlashcard.id = resultArray[0];
+            this.oneFlashcard.question = resultArray[1];
+            this.oneFlashcard.answer = resultArray[2];
+          });
+    },
+
+    fetchData() {
+      this.$http.get('http://localhost:8080/flashcards/')
+          .then(response => {
+            return response.json();
+          })
+          .then(data => {
+            const resultArray = [];
+            for (let key in data) {
+              console.log("data:" + key);
+
               resultArray.push(data[key]);
             }
             this.flashcards = resultArray;
