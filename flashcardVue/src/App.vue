@@ -14,6 +14,11 @@
           <input class="form-control" type="text" v-model="flashcard.answer">
         </div>
         <button class="btn btn-primary" @click="submit">Submit</button>
+        <hr>
+        <button class="btn btn-primary" @click="fetchData">Get Flashcard</button>
+        <ul class="list-group">
+          <li class="list-group-item" v-for="f in flashcards">{{ f.question }} : {{ f.answer }} </li>
+        </ul>
         </div>
       </div>
 
@@ -28,7 +33,8 @@ export default {
       flashcard: {
         question: '',
         answer: ''
-      }
+      },
+      flashcards: []
     };
   },
   methods: {
@@ -38,6 +44,19 @@ export default {
             console.log(response);
           }, error => {
             console.log(error);
+          });
+    },
+    fetchData() {
+      this.$http.get('http://localhost:8080/flashcards/', {headers: {'X-Custom': 'HTTP/1.1'}})
+          .then(response => {
+            return response.json();
+          })
+          .then(data => {
+            const resultArray = [];
+            for (let key in data) {
+              resultArray.push(data[key]);
+            }
+            this.flashcards = resultArray;
           });
     }
   }
