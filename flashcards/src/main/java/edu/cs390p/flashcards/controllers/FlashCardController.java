@@ -88,8 +88,9 @@ public class FlashCardController {
      */
     @CrossOrigin(origins = "http://localhost:8081")
     @RequestMapping(method = RequestMethod.GET,
-            value = "/flashCards/deleteflashcard/{id}")
+            value = "/flashcards/deleteflashcard/{id}")
     public void deleteFlashCard(@PathVariable final String id) {
+        System.out.println("attempting to delete: " + id);
         flashCardService.deleteFlashCard(id);
     }
 

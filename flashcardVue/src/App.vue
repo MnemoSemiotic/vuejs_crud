@@ -61,7 +61,7 @@
         <h1>List All Flashcards</h1>
         <button class="btn btn-primary" @click="fetchData">List All Flashcards</button>
         <ul class="list-group">
-          <li class="list-group-item" v-for="f in flashcards">{{ f.question }} : {{ f.answer }} </li>
+          <li class="list-group-item" v-for="f in flashcards">{{ f.id }} : {{ f.question }} : {{ f.answer }} </li>
         </ul>
 
 
@@ -148,16 +148,18 @@ export default {
               resultArray.push(data[key]);
             }
             this.flashcards = resultArray;
+            console.log(this.flashcards);
           });
     },
 
     deleteCard() {
-    this.$http.get('http://localhost:8080/flashcards/deleteflashcard/' + this.flashcardDelete.id )
-        .then(response => {
-        console.log(response);
-      }, error => {
-        console.log(error);
-      });
+      console.log("deleteId: " + this.flashcardDelete.id);
+      this.$http.get('http://localhost:8080/flashcards/deleteflashcard/' + this.flashcardDelete.id )
+          .then(response => {
+          console.log(response);
+        }, error => {
+          console.log(error);
+        });
     }
   }
 }
