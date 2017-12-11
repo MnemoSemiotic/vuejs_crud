@@ -48,6 +48,15 @@
 
         <hr>
 
+        <h1>Delete A Flashcard</h1>
+        <div class="form-group">
+          <label>ID of Flashcard</label>
+          <input class="form-control" type="text" v-model="flashcardDelete.id">
+        </div>
+        <button class="btn btn-primary" @click="deleteCard">Delete that Card</button>
+        <hr>
+
+
 
         <h1>List All Flashcards</h1>
         <button class="btn btn-primary" @click="fetchData">List All Flashcards</button>
@@ -81,6 +90,9 @@ export default {
       flashcardUpdate: {
         question: '',
         answer: '',
+        id: ''
+      },
+      flashcardDelete: {
         id: ''
       },
 
@@ -137,6 +149,15 @@ export default {
             }
             this.flashcards = resultArray;
           });
+    },
+
+    deleteCard() {
+    this.$http.get('http://localhost:8080/flashcards/deleteflashcard/' + this.flashcardDelete.id )
+        .then(response => {
+        console.log(response);
+      }, error => {
+        console.log(error);
+      });
     }
   }
 }
